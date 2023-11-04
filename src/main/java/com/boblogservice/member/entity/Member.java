@@ -1,9 +1,12 @@
 package com.boblogservice.member.entity;
 
+import com.boblogservice.member.dto.MemberDto;
 import com.boblogservice.member.dto.MemberType;
 import com.boblogservice.member.dto.Role;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -50,6 +53,27 @@ public class Member {
     private Boolean useYn;
 
     @Column(columnDefinition = "varchar(10)", name = "role", nullable = false)
+    @ColumnDefault("1")
     @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    @Builder
+    private Member(String username,
+                   String password,
+                   String nickname,
+                   MemberType memType) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.memType = memType;
+    }
+
+    public static Member from(MemberDto memberDto) {
+        return Member.builder()
+                .username(memberDto.getUsername())
+                .nickname(memberDto.getNickname())
+                .password(memberDto.getPassword())
+                .memType(MemberType.valueOf(memberDto.getMemType()))
+                .build();
+    }
 }

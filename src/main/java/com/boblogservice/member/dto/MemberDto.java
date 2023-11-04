@@ -1,14 +1,14 @@
 package com.boblogservice.member.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MemberDto {
     private String memId;
     private LocalDateTime createDateTime;
@@ -19,4 +19,5 @@ public class MemberDto {
     private String memType;
     private Boolean useYn;
     private String role;
+
 }
