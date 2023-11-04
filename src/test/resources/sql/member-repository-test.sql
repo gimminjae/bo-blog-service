@@ -1,0 +1,2 @@
+INSERT INTO member (memId, createDateTime, updateDateTime, memType, nickname, password, role, username, useYn)
+VALUES ('20231104Me3cf1f7b-a715-4a8b-864a-b69826498c58', NOW(), NOW(), 'C', 'testuser', 'testuser00!', 'MEMBER', 'testuser', 1);
