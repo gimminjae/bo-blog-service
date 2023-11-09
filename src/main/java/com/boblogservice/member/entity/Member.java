@@ -42,13 +42,13 @@ public class Member {
     @Column(name = "updateDateTime", nullable = false)
     private LocalDateTime updateDateTime;
 
-    @Column(columnDefinition = "varchar(50)", name = "username", nullable = false)
+    @Column(columnDefinition = "varchar(50)", name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(columnDefinition = "varchar(255)", name = "password")
     private String password;
 
-    @Column(columnDefinition = "varchar(50)", name = "nickname", nullable = false)
+    @Column(columnDefinition = "varchar(50)", name = "nickname", nullable = false, unique = true)
     private String nickname;
 
     @Column(columnDefinition = "varchar(10)", name = "memType", nullable = false)
