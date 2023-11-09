@@ -1,5 +1,6 @@
 package com.boblogservice.member.service;
 
+import com.boblogservice.member.dto.LoginDto;
 import com.boblogservice.member.dto.MemberDto;
 import com.boblogservice.member.dto.SignUpDto;
 import com.boblogservice.member.entity.Member;
@@ -34,7 +35,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Map<String, String> login() {
+    public Map<String, String> login(LoginDto loginDto) {
         return null;
     }
 
