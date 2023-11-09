@@ -6,20 +6,26 @@ import com.boblogservice.member.dto.Role;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.boblogservice.common.generator.IdGenerator.ENTITY_TYPE;
 
 @Entity
 @Getter
 @Table(name = "member")
+@NoArgsConstructor
+@DynamicInsert // 엔티티를 save할 때 null 값은 배제하고 insert 쿼리를 날리도록 한다.
 public class Member {
     @Id
-    @Column(columnDefinition = "varchar(255)", name = "memId")
+    @Column(columnDefinition = "varchar(100)", name = "memId")
     @GenericGenerator(
             name = "memId",
             strategy = "com.boblogservice.common.generator.IdGenerator",
@@ -39,29 +45,34 @@ public class Member {
     @Column(columnDefinition = "varchar(50)", name = "username", nullable = false)
     private String username;
 
-    @Column(columnDefinition = "varchar(50)", name = "password")
+    @Column(columnDefinition = "varchar(255)", name = "password")
     private String password;
 
     @Column(columnDefinition = "varchar(50)", name = "nickname", nullable = false)
     private String nickname;
 
-    @Column(columnDefinition = "char(1)", name = "memType", nullable = false)
+    @Column(columnDefinition = "varchar(10)", name = "memType", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private MemberType memType;
 
     @Column(columnDefinition = "boolean", name = "useYn", nullable = false)
+    @ColumnDefault("true")
     private Boolean useYn;
 
     @Column(columnDefinition = "varchar(10)", name = "role", nullable = false)
-    @ColumnDefault("1")
+    @ColumnDefault("'MEMBER'")
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
     @Builder
-    private Member(String username,
+    private Member(LocalDateTime createDateTime,
+                   LocalDateTime updateDateTime,
+                   String username,
                    String password,
                    String nickname,
                    MemberType memType) {
+        this.createDateTime = createDateTime;
+        this.updateDateTime = updateDateTime;
         this.username = username;
         this.password = password;
         this.nickname = nickname;
@@ -70,6 +81,8 @@ public class Member {
 
     public static Member from(MemberDto memberDto) {
         return Member.builder()
+                .createDateTime(LocalDateTime.now())
+                .updateDateTime(LocalDateTime.now())
                 .username(memberDto.getUsername())
                 .nickname(memberDto.getNickname())
                 .password(memberDto.getPassword())

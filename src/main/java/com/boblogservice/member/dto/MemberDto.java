@@ -19,5 +19,12 @@ public class MemberDto {
     private String memType;
     private Boolean useYn;
     private String role;
-
+    public static MemberDto from(SignUpDto signUpDto) {
+        return MemberDto.builder()
+                .username(signUpDto.getUsername())
+                .nickname(signUpDto.getNickname())
+                .password(signUpDto.getPassword1())
+                .memType(signUpDto.getMemType())
+                .build();
+    }
 }
