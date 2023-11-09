@@ -16,11 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/member")
@@ -33,6 +29,16 @@ public class MemberController {
     public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpDto signUpDto, BindingResult bindingResult) {
         ValidationUtil.confirmError(bindingResult);
         memberService.signUp(signUpDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("/nickname")
+    public ResponseEntity<Void> confirmNickname(@RequestParam String nickname) {
+        memberService.confirmMemberByNickname(nickname);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("/username")
+    public ResponseEntity<Void> confirmUsername(@RequestParam String username) {
+        memberService.confirmMemberByUsername(username);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
