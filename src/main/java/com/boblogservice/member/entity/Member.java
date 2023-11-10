@@ -14,7 +14,9 @@ import org.hibernate.annotations.Parameter;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.boblogservice.common.generator.IdGenerator.ENTITY_TYPE;
 
@@ -88,5 +90,26 @@ public class Member {
                 .password(memberDto.getPassword())
                 .memType(MemberType.valueOf(memberDto.getMemType()))
                 .build();
+    }
+
+    public MemberDto toDto() {
+        return MemberDto.builder()
+                .createDateTime(LocalDateTime.now())
+                .updateDateTime(LocalDateTime.now())
+                .username(this.getUsername())
+                .nickname(this.getNickname())
+                .password(this.getPassword())
+                .memType(this.getMemType().getTypeName())
+                .role(this.getRole().getRole())
+                .useYn(this.getUseYn())
+                .build();
+    }
+    public Map<String, Object> getAccessTokenClaims() {
+        return Map.of(
+                "username", getUsername(),
+                "createDateTime", getCreateDateTime().toString(),
+                "nickname", getNickname(),
+                "role", getRole().getRole()
+        );
     }
 }

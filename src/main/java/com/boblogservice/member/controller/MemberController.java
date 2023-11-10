@@ -52,10 +52,9 @@ public class MemberController {
     }
 
     @Operation(summary = "sign in - 로그인", description = "")
-    @Parameter(name = "username", description = "username - 아이디")
-    @Parameter(name = "password", description = "password - 비밀번호")
     @GetMapping("/sign-in")
-    public ResponseEntity<Map<String, String>> signIn(@Valid LoginDto loginDto, BindingResult bindingResult) {
+    public ResponseEntity<Map<String, String>> signIn(@ModelAttribute @Valid LoginDto loginDto, BindingResult bindingResult) {
+        ValidationUtil.confirmError(bindingResult);
         return new ResponseEntity<>(memberService.login(loginDto), HttpStatus.OK);
     }
 }
