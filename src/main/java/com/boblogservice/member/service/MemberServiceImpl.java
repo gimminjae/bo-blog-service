@@ -102,7 +102,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberDto getByUsername(String username) {
         Optional<Member> optionalMember = memberRepository.findByUsername(username);
-        if(optionalMember.isPresent()) {
+        if(optionalMember.isEmpty()) {
             throw new NotFoundMemberException(NOT_FOUND_MEMBER);
         }
         return optionalMember.get().toDto();

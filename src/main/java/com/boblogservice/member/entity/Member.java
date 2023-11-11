@@ -94,6 +94,7 @@ public class Member {
 
     public MemberDto toDto() {
         return MemberDto.builder()
+                .memId(this.getMemId())
                 .createDateTime(LocalDateTime.now())
                 .updateDateTime(LocalDateTime.now())
                 .username(this.getUsername())

@@ -71,4 +71,9 @@ public class MemberController {
         memberService.signOut(authUser.getMemId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @Operation(summary = "get me - 로그인 회원 정보 조회", description = "")
+    @GetMapping("")
+    public ResponseEntity<Map<String, Object>> getMe(@AuthenticationPrincipal AuthUser authUser) {
+        return new ResponseEntity<>(Map.of("member", authUser), HttpStatus.OK);
+    }
 }

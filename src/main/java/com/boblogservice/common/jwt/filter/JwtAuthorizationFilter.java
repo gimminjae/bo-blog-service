@@ -32,16 +32,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String accessToken = request.getHeader("Authentication");
-        String refreshToken = request.getHeader("Authentication-refresh");
 
-        if(accessToken == null || accessToken.isEmpty()) {
-            if(refreshToken != null && !refreshToken.isEmpty()) {
-//                accessToken = memberService.regenAccessToken(refreshToken);
-            }
-        }
-        //refreshtoken이 없거나 유효하지 않으면 예외발생
-
-
+        log.info("jwt filter");
         if (accessToken != null && !accessToken.isEmpty()) {
             // 1차 체크(정보가 변조되지 않았는지 체크)
             if (jwtProvider.verify(accessToken)) {
