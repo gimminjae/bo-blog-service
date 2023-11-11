@@ -10,4 +10,6 @@ public interface MemberRepository {
     Optional<Member> findByUsername(String username);
 
     Optional<Member> findByNickname(String nickname);
+
+    Optional<Member> findById(String id);
 }

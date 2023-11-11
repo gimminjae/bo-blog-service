@@ -18,4 +18,6 @@ public interface MemberService {
     void confirmMemberByUsername(String username);
 
     MemberDto getByUsername(String username);
+
+    String getAccessTokenWithRefreshToken(String refreshToken);
 }

@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
@@ -37,6 +38,8 @@ public class MemberServiceImpl implements MemberService {
     private static final String USERNAME_CANNOT_USED = "사용할 수 없는 아이디입니다.";
     private static final String NOT_FOUND_MEMBER = "회원 정보를 찾을 수 없습니다.";
     private static final String NOT_RIGHT_LOGIN_INFO = "아이디 혹은 비밀번호를 확인하세요.";
+    private final static String INVALID_REQUEST_MSG = "유효하지 않은 요청입니다.";
+    private final static String EXPIRE_RELOGIN_MSG = "기간 만료 : 재로그인해주세요.";
 
     @Override
     public void signUp(SignUpDto signUpDto) {
@@ -61,12 +64,7 @@ public class MemberServiceImpl implements MemberService {
     }
     private String generateRefreshToken(Member member) {
 
-        String refreshTokenString = new StringBuilder()
-                .append(member.getCreateDateTime().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm")))
-                .append(member.getMemId())
-                .append(UUID.randomUUID())
-                .toString()
-        ;
+        String refreshTokenString = generateRefreshToken(member.getCreateDateTime(), member.getMemId());
         try {
             RefreshToken refreshToken = ObjectUtil.isNullExceptionElseReturnObJect(refreshTokenRedisRepository.findById(member.getMemId()));
             refreshToken.update(refreshTokenString);
@@ -75,6 +73,14 @@ public class MemberServiceImpl implements MemberService {
             return refreshTokenRedisRepository.save(RefreshToken.from(member.getMemId(), refreshTokenString)).getRefreshToken();
         }
         return refreshTokenString;
+    }
+    private String generateRefreshToken(LocalDateTime createDateTime, String memId) {
+        return new StringBuilder()
+                .append(createDateTime.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm")))
+                .append(memId)
+                .append(UUID.randomUUID())
+                .toString()
+                ;
     }
 
     @Override
@@ -100,5 +106,15 @@ public class MemberServiceImpl implements MemberService {
             throw new NotFoundMemberException(NOT_FOUND_MEMBER);
         }
         return optionalMember.get().toDto();
+    }
+    @Override
+    public String getAccessTokenWithRefreshToken(String inputRefreshToken) {
+        RefreshToken refreshToken = ObjectUtil.isNullExceptionElseReturnObJect(refreshTokenRedisRepository.findByRefreshToken(inputRefreshToken), EXPIRE_RELOGIN_MSG);
+
+        return generateAccessToken(ObjectUtil.isNullExceptionElseReturnObJect(memberRepository.findById(refreshToken.getId())));
+    }
+
+    private void deleteRefreshToken(String memId) {
+        refreshTokenRedisRepository.deleteById(memId);
     }
 }

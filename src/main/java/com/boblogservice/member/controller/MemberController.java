@@ -57,4 +57,10 @@ public class MemberController {
         ValidationUtil.confirmError(bindingResult);
         return new ResponseEntity<>(memberService.login(loginDto), HttpStatus.OK);
     }
+    @Operation(summary = "get accessToken with refreshToken - accessToken 재발급", description = "")
+    @Parameter(name = "refreshToken", description = "refreshToken - 리프레시 토큰")
+    @GetMapping("/access-token")
+    public ResponseEntity<String> regenerateAccessToken(@RequestParam String refreshToken) {
+        return new ResponseEntity<>(memberService.getAccessTokenWithRefreshToken(refreshToken), HttpStatus.OK);
+    }
 }
