@@ -114,6 +114,11 @@ public class MemberServiceImpl implements MemberService {
         return generateAccessToken(ObjectUtil.isNullExceptionElseReturnObJect(memberRepository.findById(refreshToken.getId())));
     }
 
+    @Override
+    public void signOut(String memId) {
+        deleteRefreshToken(memId);
+    }
+
     private void deleteRefreshToken(String memId) {
         refreshTokenRedisRepository.deleteById(memId);
     }

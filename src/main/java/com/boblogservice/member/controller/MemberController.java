@@ -4,6 +4,7 @@ import com.boblogservice.common.exception.FormValidationException;
 import com.boblogservice.common.validation.ValidationUtil;
 import com.boblogservice.member.dto.LoginDto;
 import com.boblogservice.member.dto.SignUpDto;
+import com.boblogservice.member.entity.AuthUser;
 import com.boblogservice.member.service.MemberService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +19,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,5 +64,11 @@ public class MemberController {
     @GetMapping("/access-token")
     public ResponseEntity<String> regenerateAccessToken(@RequestParam String refreshToken) {
         return new ResponseEntity<>(memberService.getAccessTokenWithRefreshToken(refreshToken), HttpStatus.OK);
+    }
+    @Operation(summary = "sign out - 로그아웃", description = "")
+    @GetMapping("/sign-out")
+    public ResponseEntity<String> regenerateAccessToken(@AuthenticationPrincipal AuthUser authUser) {
+        memberService.signOut(authUser.getMemId());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

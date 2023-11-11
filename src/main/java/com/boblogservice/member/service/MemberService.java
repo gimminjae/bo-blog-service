@@ -20,4 +20,6 @@ public interface MemberService {
     MemberDto getByUsername(String username);
 
     String getAccessTokenWithRefreshToken(String refreshToken);
+
+    void signOut(String memId);
 }
