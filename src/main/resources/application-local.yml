@@ -1,4 +1,9 @@
 spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/blogdb?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
@@ -12,10 +17,12 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       ddl-auto: update # not create or create-drop!!!!
-#  data:
-#    redis:
-#      host: 127.0.0.1
-#      port: 6379
+  custom:
+    secretKey: secretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKey
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
 # mapping DB table's column name and DTO's name
 #mybatis:
 #  configuration:
