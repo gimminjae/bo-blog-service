@@ -1,5 +1,6 @@
 package com.boblogservice.member.dto;
 
+import com.boblogservice.member.entity.Member;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,6 +34,9 @@ public class MemberDto {
                 .build();
     }
 
+    public Member toEntity() {
+        return Member.from(this);
+    }
 
     public List<GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();

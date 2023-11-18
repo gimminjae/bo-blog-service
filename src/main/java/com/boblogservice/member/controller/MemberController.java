@@ -1,6 +1,5 @@
 package com.boblogservice.member.controller;
 
-import com.boblogservice.common.exception.FormValidationException;
 import com.boblogservice.common.validation.ValidationUtil;
 import com.boblogservice.member.dto.LoginDto;
 import com.boblogservice.member.dto.SignUpDto;

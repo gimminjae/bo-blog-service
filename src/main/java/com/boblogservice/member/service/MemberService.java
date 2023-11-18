@@ -22,4 +22,6 @@ public interface MemberService {
     String getAccessTokenWithRefreshToken(String refreshToken);
 
     void signOut(String memId);
+
+    MemberDto getById(String memId);
 }

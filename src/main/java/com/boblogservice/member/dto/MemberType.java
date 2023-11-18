@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum MemberType {
-    KAKAO("K", "kakao"),
-    NAVER("N", "naver"),
-    GOOGLE("G", "google"),
-    COMMON("C", "common");
+    KAKAO("K", "KAKAO"),
+    NAVER("N", "NAVER"),
+    GOOGLE("G", "GOOGLE"),
+    COMMON("C", "COMMON");
 
     private String code;
     private String typeName;

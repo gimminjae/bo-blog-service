@@ -1,5 +1,8 @@
 package com.boblogservice.post.dto;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,7 +14,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PostDto {
     private String postId;
+    @NotBlank(message = "제목는 필수항목입니다.")
     private String title;
+    @NotBlank(message = "내용는 필수항목입니다.")
     private String content;
     private String parsedContent;
     private LocalDateTime createDateTime;

@@ -1,14 +1,18 @@
 package com.boblogservice.post.entity;
 
+import com.boblogservice.common.util.CommonUtil;
+import com.boblogservice.member.dto.MemberDto;
 import com.boblogservice.member.entity.Member;
 import com.boblogservice.post.dto.PostDto;
 import com.boblogservice.series.entity.Series;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 
@@ -32,7 +36,7 @@ public class Post {
     @GeneratedValue(generator = "postId")
     private String postId;
 
-    @Column(columnDefinition = "varchar(100)", name = "title", nullable = false)
+    @Column(columnDefinition = "varchar(255)", name = "title", nullable = false)
     private String title;
 
     @Column(columnDefinition = "LONGTEXT", name = "content", nullable = false)
@@ -67,5 +71,60 @@ public class Post {
                 .memName(this.getMember().getNickname())
                 .seriesId(this.getSeries().getSeriesId())
                 .build();
+    }
+
+    @Builder
+    private Post(LocalDateTime createDateTime,
+                 LocalDateTime updateDateTime,
+                 String title,
+                 String content,
+                 String parsedContent,
+                 Member member,
+                 String seriesId) {
+        this.createDateTime = createDateTime;
+        this.updateDateTime = updateDateTime;
+        this.title = title;
+        this.content = content;
+        this.parsedContent = parsedContent;
+        this.member = member;
+    }
+
+    public static Post from(PostDto postDto, Member member) {
+        return Post.builder()
+                .title(postDto.getTitle())
+                .content(postDto.getContent())
+                .parsedContent(CommonUtil.markdown(postDto.getContent()))
+                .createDateTime(LocalDateTime.now())
+                .updateDateTime(LocalDateTime.now())
+                .member(member)
+                .build();
+    }
+
+    public void updatePost(PostDto postDto) {
+        setTitle(postDto.getTitle());
+        setContent(postDto.getContent());
+        setParsedContent(CommonUtil.markdown(postDto.getContent()));
+        setUpdateDateTime(LocalDateTime.now());
+//        setSeries();
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setParsedContent(String parsedContent) {
+        this.parsedContent = parsedContent;
+    }
+
+    public void setUpdateDateTime(LocalDateTime updateDateTime) {
+        this.updateDateTime = updateDateTime;
+    }
+
+    public void setSeries(Series series) {
+        this.series = series;
     }
 }

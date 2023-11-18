@@ -101,11 +101,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDto getByUsername(String username) {
-        Optional<Member> optionalMember = memberRepository.findByUsername(username);
-        if(optionalMember.isEmpty()) {
-            throw new NotFoundMemberException(NOT_FOUND_MEMBER);
-        }
-        return optionalMember.get().toDto();
+        return ObjectUtil.isNullExceptionElseReturnObJect(memberRepository.findByUsername(username), NOT_FOUND_MEMBER).toDto();
     }
     @Override
     public String getAccessTokenWithRefreshToken(String inputRefreshToken) {
@@ -117,6 +113,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void signOut(String memId) {
         deleteRefreshToken(memId);
+    }
+
+    @Override
+    public MemberDto getById(String memId) {
+        return ObjectUtil.isNullExceptionElseReturnObJect(memberRepository.findById(memId), NOT_FOUND_MEMBER).toDto();
     }
 
     private void deleteRefreshToken(String memId) {
