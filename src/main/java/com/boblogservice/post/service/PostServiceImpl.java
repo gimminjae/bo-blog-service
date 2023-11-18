@@ -9,6 +9,8 @@ import com.boblogservice.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
@@ -41,5 +43,15 @@ public class PostServiceImpl implements PostService {
             throw new AccessDeniedForUpdatePostException(AECCESS_DENIED_FOR_UPDATE_POST);
         }
         postRepository.delete(post);
+    }
+
+    @Override
+    public PostDto getById(String postId) {
+        return ObjectUtil.isNullExceptionElseReturnObJect(postRepository.findById(postId), NOT_FOUND_POST).toDto();
+    }
+
+    @Override
+    public List<PostDto> getByNickname(String nickname) {
+        return postRepository.findByMember(memberService.getByNickname(nickname).toEntity()).stream().map(Post::toDto).toList();
     }
 }

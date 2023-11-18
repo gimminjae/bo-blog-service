@@ -24,4 +24,6 @@ public interface MemberService {
     void signOut(String memId);
 
     MemberDto getById(String memId);
+
+    MemberDto getByNickname(String nickname);
 }

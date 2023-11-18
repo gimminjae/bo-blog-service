@@ -16,6 +16,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "PostController API", description = "post")
 @RestController
 @RequestMapping("/api/post")
@@ -57,17 +59,18 @@ public class PostController {
     }
     @Operation(summary = "read post by id- 특정 글 조회", description = "")
     @GetMapping("/{postId}")
-    public ResponseEntity<Void> readPostById(@PathVariable String postId) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<PostDto> readPostById(@PathVariable String postId) {
+        return new ResponseEntity<>(postService.getById(postId), HttpStatus.OK);
     }
     @Operation(summary = "read post by member - 회원별 글 조회", description = "")
-    @GetMapping("/nickname/{nickname}")
-    public ResponseEntity<Void> readPostByMember(@RequestParam String nickname) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    @GetMapping("/nickname")
+    public ResponseEntity<List<PostDto>> readPostByMember(@RequestParam String nickname) {
+        return new ResponseEntity<>(postService.getByNickname(nickname), HttpStatus.OK);
     }
     @Operation(summary = "read post by series - 시리즈 글 조회", description = "")
     @GetMapping("")
-    public ResponseEntity<Void> readPostBySeries(@RequestParam String seriesId) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<List<PostDto>> readPostBySeries(@RequestParam String seriesId) {
+        //TODO 시리즈 기능 구현 후 연결
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

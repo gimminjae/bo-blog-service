@@ -120,6 +120,11 @@ public class MemberServiceImpl implements MemberService {
         return ObjectUtil.isNullExceptionElseReturnObJect(memberRepository.findById(memId), NOT_FOUND_MEMBER).toDto();
     }
 
+    @Override
+    public MemberDto getByNickname(String nickname) {
+        return ObjectUtil.isNullExceptionElseReturnObJect(memberRepository.findByNickname(nickname), NOT_FOUND_MEMBER).toDto();
+    }
+
     private void deleteRefreshToken(String memId) {
         refreshTokenRedisRepository.deleteById(memId);
     }

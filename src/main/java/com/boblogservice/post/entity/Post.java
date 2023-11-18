@@ -69,7 +69,7 @@ public class Post {
                 .updateDateTime(this.getUpdateDateTime())
                 .memId(this.getMember().getMemId())
                 .memName(this.getMember().getNickname())
-                .seriesId(this.getSeries().getSeriesId())
+                .seriesId(this.getSeries() == null ? "" : this.getSeries().getSeriesId())
                 .build();
     }
 
