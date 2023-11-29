@@ -14,4 +14,6 @@ public interface PostService {
     PostDto getById(String postId);
 
     List<PostDto> getByNickname(String nickname);
+
+    void writeTmp(PostDto postDto);
 }

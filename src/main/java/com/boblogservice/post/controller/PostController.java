@@ -38,6 +38,18 @@ public class PostController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @Operation(summary = "create post - 글 임시저장", description = "")
+    @PostMapping("/tmp")
+    @PreAuthorize("hasAnyAuthority('MEMBER')")
+    public ResponseEntity<Void> writePostTmp(@AuthenticationPrincipal AuthUser authUser, @RequestBody @Valid PostDto postDto, BindingResult bindingResult) {
+        ValidationUtil.confirmError(bindingResult);
+
+        postDto.setMemId(authUser.getMemId());
+        postDto.setMemName(authUser.getNickname());
+        postService.writeTmp(postDto);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
     @Operation(summary = "modify post - 글 수정", description = "")
     @PutMapping("")
     @PreAuthorize("hasAnyAuthority('MEMBER')")

@@ -27,4 +27,5 @@ public class PostDto {
     private String memId;
     private String memName;
     private String seriesId;
+    private Boolean tmpYn;
 }

@@ -54,4 +54,19 @@ public class PostServiceImpl implements PostService {
     public List<PostDto> getByNickname(String nickname) {
         return postRepository.findByMember(memberService.getByNickname(nickname).toEntity()).stream().map(Post::toDto).toList();
     }
+
+    @Override
+    public void writeTmp(PostDto postDto) {
+        Post post;
+        try {
+            post = ObjectUtil.isNullExceptionElseReturnObJect(postRepository.findById(postDto.getPostId()), "");
+            if(!post.getMember().getMemId().equals(postDto.getMemId())) {
+                throw new AccessDeniedForUpdatePostException(AECCESS_DENIED_FOR_UPDATE_POST);
+            }
+            post.updatePost(postDto);
+        } catch(Exception e) {
+            post = Post.from(postDto, memberService.getById(postDto.getMemId()).toEntity());
+        }
+        postRepository.save(post);
+    }
 }

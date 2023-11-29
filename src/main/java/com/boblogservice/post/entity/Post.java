@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -59,6 +60,10 @@ public class Post {
     @JoinColumn(name="seriesId")
     private Series series;
 
+    @Column(columnDefinition = "boolean", name = "tmpYn", nullable = false)
+    @ColumnDefault("true")
+    private Boolean tmpYn;
+
     public PostDto toDto() {
         return PostDto.builder()
                 .postId(this.getPostId())
@@ -70,6 +75,7 @@ public class Post {
                 .memId(this.getMember().getMemId())
                 .memName(this.getMember().getNickname())
                 .seriesId(this.getSeries() == null ? "" : this.getSeries().getSeriesId())
+                .tmpYn(this.getTmpYn())
                 .build();
     }
 
@@ -80,13 +86,15 @@ public class Post {
                  String content,
                  String parsedContent,
                  Member member,
-                 String seriesId) {
+                 String seriesId,
+                 Boolean tmpYn) {
         this.createDateTime = createDateTime;
         this.updateDateTime = updateDateTime;
         this.title = title;
         this.content = content;
         this.parsedContent = parsedContent;
         this.member = member;
+        this.tmpYn = tmpYn;
     }
 
     public static Post from(PostDto postDto, Member member) {
@@ -97,6 +105,7 @@ public class Post {
                 .createDateTime(LocalDateTime.now())
                 .updateDateTime(LocalDateTime.now())
                 .member(member)
+                .tmpYn(postDto.getTmpYn())
                 .build();
     }
 
