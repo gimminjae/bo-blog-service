@@ -63,10 +63,10 @@ public class PostServiceImpl implements PostService {
             if(!post.getMember().getMemId().equals(postDto.getMemId())) {
                 throw new AccessDeniedForUpdatePostException(AECCESS_DENIED_FOR_UPDATE_POST);
             }
-            post.updatePost(postDto);
         } catch(Exception e) {
             post = Post.from(postDto, memberService.getById(postDto.getMemId()).toEntity());
         }
+        post.updatePostTmp(postDto);
         postRepository.save(post);
     }
 }

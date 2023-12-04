@@ -61,7 +61,7 @@ public class Post {
     private Series series;
 
     @Column(columnDefinition = "boolean", name = "tmpYn", nullable = false)
-    @ColumnDefault("true")
+    @ColumnDefault("false")
     private Boolean tmpYn;
 
     public PostDto toDto() {
@@ -110,30 +110,38 @@ public class Post {
     }
 
     public void updatePost(PostDto postDto) {
-        setTitle(postDto.getTitle());
-        setContent(postDto.getContent());
-        setParsedContent(CommonUtil.markdown(postDto.getContent()));
-        setUpdateDateTime(LocalDateTime.now());
+        this.setTitle(postDto.getTitle());
+        this.setContent(postDto.getContent());
+        this.setParsedContent(CommonUtil.markdown(postDto.getContent()));
+        this.setUpdateDateTime(LocalDateTime.now());
 //        setSeries();
     }
 
-    public void setTitle(String title) {
+    public void updatePostTmp(PostDto postDto) {
+        updatePost(postDto);
+        this.setTmpYn(true);
+    }
+
+    private void setTitle(String title) {
         this.title = title;
     }
 
-    public void setContent(String content) {
+    private void setContent(String content) {
         this.content = content;
     }
 
-    public void setParsedContent(String parsedContent) {
+    private void setParsedContent(String parsedContent) {
         this.parsedContent = parsedContent;
     }
 
-    public void setUpdateDateTime(LocalDateTime updateDateTime) {
+    private void setUpdateDateTime(LocalDateTime updateDateTime) {
         this.updateDateTime = updateDateTime;
     }
 
-    public void setSeries(Series series) {
+    private void setSeries(Series series) {
         this.series = series;
+    }
+    private void setTmpYn(Boolean tmpYn) {
+        this.tmpYn = tmpYn;
     }
 }
