@@ -4,6 +4,7 @@ import com.boblogservice.member.entity.Member;
 import com.boblogservice.post.entity.Post;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,4 +16,8 @@ public interface PostRepository {
     void delete(Post post);
 
     List<Post> findByMember(Member member);
+
+    List<Post> findByMemberAndTmpYnIsFalse(Member member);
+
+    List<Post> findByMemberAndTmpYnIsTrue(Member member);
 }

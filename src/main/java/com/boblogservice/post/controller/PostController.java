@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "PostController API", description = "post")
 @RestController
@@ -74,10 +75,22 @@ public class PostController {
     public ResponseEntity<PostDto> readPostById(@PathVariable String postId) {
         return new ResponseEntity<>(postService.getById(postId), HttpStatus.OK);
     }
-    @Operation(summary = "read post by member - 회원별 글 조회", description = "")
+    @Operation(summary = "read post by member - 회원별 전체 글 조회", description = "")
     @GetMapping("/nickname")
-    public ResponseEntity<List<PostDto>> readPostByMember(@RequestParam String nickname) {
+    @PreAuthorize("hasAnyAuthority('MEMBER')")
+    public ResponseEntity<Map<String, List<PostDto>>> readPostByMember(@RequestParam String nickname) {
         return new ResponseEntity<>(postService.getByNickname(nickname), HttpStatus.OK);
+    }
+    @Operation(summary = "read post by member - 회원별 임시아닌 글 조회", description = "")
+    @GetMapping("/nickname/not-tmp")
+    public ResponseEntity<List<PostDto>> readPostNotTmpByMember(@RequestParam String nickname) {
+        return new ResponseEntity<>(postService.getByNicknameNotTmp(nickname), HttpStatus.OK);
+    }
+    @Operation(summary = "read post by member - 회원별 임시 글 조회", description = "")
+    @GetMapping("/nickname/tmp")
+    @PreAuthorize("hasAnyAuthority('MEMBER')")
+    public ResponseEntity<List<PostDto>> readPostTmpByMember(@RequestParam String nickname) {
+        return new ResponseEntity<>(postService.getByNicknameTmp(nickname), HttpStatus.OK);
     }
     @Operation(summary = "read post by series - 시리즈 글 조회", description = "")
     @GetMapping("")

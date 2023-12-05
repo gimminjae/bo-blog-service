@@ -3,6 +3,7 @@ package com.boblogservice.post.service;
 import com.boblogservice.post.dto.PostDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PostService {
     void write(PostDto postDto);
@@ -13,7 +14,11 @@ public interface PostService {
 
     PostDto getById(String postId);
 
-    List<PostDto> getByNickname(String nickname);
+    Map<String, List<PostDto>> getByNickname(String nickname);
 
     void writeTmp(PostDto postDto);
+
+    List<PostDto> getByNicknameNotTmp(String nickname);
+
+    List<PostDto> getByNicknameTmp(String nickname);
 }

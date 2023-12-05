@@ -1,6 +1,8 @@
 package com.boblogservice.post.service;
 
 import com.boblogservice.common.util.ObjectUtil;
+import com.boblogservice.member.dto.MemberDto;
+import com.boblogservice.member.entity.Member;
 import com.boblogservice.member.service.MemberService;
 import com.boblogservice.post.dto.PostDto;
 import com.boblogservice.post.entity.Post;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -51,8 +54,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getByNickname(String nickname) {
-        return postRepository.findByMember(memberService.getByNickname(nickname).toEntity()).stream().map(Post::toDto).toList();
+    public Map<String, List<PostDto>> getByNickname(String nickname) {
+        return Map.of("notTmp", getByNicknameNotTmp(nickname), "tmp", getByNicknameTmp(nickname));
     }
 
     @Override
@@ -68,5 +71,15 @@ public class PostServiceImpl implements PostService {
         }
         post.updatePostTmp(postDto);
         postRepository.save(post);
+    }
+
+    @Override
+    public List<PostDto> getByNicknameNotTmp(String nickname) {
+        return postRepository.findByMemberAndTmpYnIsFalse(memberService.getByNickname(nickname).toEntity()).stream().map(Post::toDto).toList();
+    }
+
+    @Override
+    public List<PostDto> getByNicknameTmp(String nickname) {
+        return postRepository.findByMemberAndTmpYnIsTrue(memberService.getByNickname(nickname).toEntity()).stream().map(Post::toDto).toList();
     }
 }
