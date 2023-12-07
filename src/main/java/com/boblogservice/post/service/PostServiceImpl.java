@@ -20,7 +20,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final MemberService memberService;
 
-    private static final String AECCESS_DENIED_FOR_UPDATE_POST = "게시물 수정 대한 권한이 없습니다.";
+    private static final String ACCESS_DENIED_FOR_UPDATE_POST = "게시물 수정 대한 권한이 없습니다.";
     private static final String NOT_FOUND_POST = "게시물이 존재하지 않습니다.";
 
     @Override
@@ -33,7 +33,7 @@ public class PostServiceImpl implements PostService {
     public void modify(PostDto postDto) {
         Post post = ObjectUtil.isNullExceptionElseReturnObJect(postRepository.findById(postDto.getPostId()), "");
         if(!post.getMember().getMemId().equals(postDto.getMemId())) {
-            throw new AccessDeniedForUpdatePostException(AECCESS_DENIED_FOR_UPDATE_POST);
+            throw new AccessDeniedForUpdatePostException(ACCESS_DENIED_FOR_UPDATE_POST);
         }
         post.updatePost(postDto);
         postRepository.save(post);
@@ -43,7 +43,7 @@ public class PostServiceImpl implements PostService {
     public void delete(String postId, String memId) {
         Post post = ObjectUtil.isNullExceptionElseReturnObJect(postRepository.findById(postId), NOT_FOUND_POST);
         if(!post.getMember().getMemId().equals(memId)) {
-            throw new AccessDeniedForUpdatePostException(AECCESS_DENIED_FOR_UPDATE_POST);
+            throw new AccessDeniedForUpdatePostException(ACCESS_DENIED_FOR_UPDATE_POST);
         }
         postRepository.delete(post);
     }
@@ -64,7 +64,7 @@ public class PostServiceImpl implements PostService {
         try {
             post = ObjectUtil.isNullExceptionElseReturnObJect(postRepository.findById(postDto.getPostId()), "");
             if(!post.getMember().getMemId().equals(postDto.getMemId())) {
-                throw new AccessDeniedForUpdatePostException(AECCESS_DENIED_FOR_UPDATE_POST);
+                throw new AccessDeniedForUpdatePostException(ACCESS_DENIED_FOR_UPDATE_POST);
             }
         } catch(Exception e) {
             post = Post.from(postDto, memberService.getById(postDto.getMemId()).toEntity());
