@@ -100,8 +100,8 @@ public class Member {
     public MemberDto toDto() {
         return MemberDto.builder()
                 .memId(this.getMemId())
-                .createDateTime(LocalDateTime.now())
-                .updateDateTime(LocalDateTime.now())
+                .createDateTime(this.getCreateDateTime())
+                .updateDateTime(this.getUpdateDateTime())
                 .username(this.getUsername())
                 .nickname(this.getNickname())
                 .password(this.getPassword())
