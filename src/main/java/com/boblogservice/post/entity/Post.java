@@ -114,6 +114,7 @@ public class Post {
         this.setContent(postDto.getContent());
         this.setParsedContent(CommonUtil.markdown(postDto.getContent()));
         this.setUpdateDateTime(LocalDateTime.now());
+        this.setTmpYn(postDto.getTmpYn());
 //        setSeries();
     }
 
