@@ -1,0 +1,36 @@
+spring:
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: ${MAIL_UN}
+#    password: ${MAIL_PW}
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+#            required: true
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+  custom:
+    secretKey: ${JWT_KEY}
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
+    username: ${DB_UN}
+    password: ${DB_PW}
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: update # not create or create-drop!!!!
+# mapping DB table's column name and DTO's name
+mybatis:
+  configuration:

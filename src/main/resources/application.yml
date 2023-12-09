@@ -1,3 +1,5 @@
 spring:
   profiles:
     active: ${RUN_TYPE}
+    include:
+      - aws
