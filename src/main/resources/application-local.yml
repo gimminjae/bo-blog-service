@@ -1,4 +1,6 @@
 spring:
+  messages:
+    basename: errors
   devtools:
     livereload:
       enabled: true

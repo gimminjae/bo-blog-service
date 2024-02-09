@@ -67,6 +67,7 @@
                 location.href = '/'
             } catch (error) {
                 console.log('error: ', error.response.data.errors)
+                console.log('error: ', JSON.parse(error.response.data.errors))
             }
         }
         function getSignUpDto() {

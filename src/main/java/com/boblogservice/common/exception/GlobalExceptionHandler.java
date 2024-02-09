@@ -1,5 +1,6 @@
 package com.boblogservice.common.exception;
 
+import com.boblogservice.common.validation.FieldErrorDetail;
 import com.boblogservice.member.exception.NotCorrectTwoPasswordException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -20,10 +21,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(Map.of("errors", List.of(e.getMessage())), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(FormValidationException.class)
-    public ResponseEntity<Map<String, List<String>>> handlerFormValidationException(FormValidationException e) {
-        String s = e.getMessage();
-        List<String> messages = Arrays.stream(s.split("\n")).toList();
-        return new ResponseEntity<>(Map.of("errors", messages), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Map<String, List<FieldErrorDetail>>> handlerFormValidationException(FormValidationException e) {
+        return new ResponseEntity<>(Map.of("errors", e.getErrors()), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<Map<String, String>> handleNullPointerException(IllegalStateException e) {

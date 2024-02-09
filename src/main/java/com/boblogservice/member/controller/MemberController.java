@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,7 +34,7 @@ public class MemberController {
 
     @Operation(summary = "sign up - 회원가입", description = "")
     @PostMapping("")
-    public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpDto signUpDto, BindingResult bindingResult) {
+    public ResponseEntity<Void> signUp(@Validated @RequestBody SignUpDto signUpDto, BindingResult bindingResult) {
         ValidationUtil.confirmError(bindingResult);
         memberService.signUp(signUpDto);
         return new ResponseEntity<>(HttpStatus.OK);
