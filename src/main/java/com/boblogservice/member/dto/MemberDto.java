@@ -1,5 +1,7 @@
 package com.boblogservice.member.dto;
 
+import com.boblogservice.member.entity.Member;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,7 +18,9 @@ import java.util.List;
 @AllArgsConstructor
 public class MemberDto {
     private String memId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createDateTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime updateDateTime;
     private String username;
     private String password;
@@ -33,6 +37,9 @@ public class MemberDto {
                 .build();
     }
 
+    public Member toEntity() {
+        return Member.from(this);
+    }
 
     public List<GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();

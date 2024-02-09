@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
-@JsonIncludeProperties({"nickname", "role", "createDateTime", "memId", "username"})
+@JsonIncludeProperties({"nickname", "role", "createDateTime", "memId", "username", "memType"})
 public class AuthUser extends User {
     private final String memId;
     private final String nickname;
@@ -23,6 +23,7 @@ public class AuthUser extends User {
     private final LocalDateTime createDateTime;
     private final String role;
     private final String username;
+    private final String memType;
 
     @Override
     public Set<GrantedAuthority> getAuthorities() {
@@ -30,6 +31,7 @@ public class AuthUser extends User {
     }
     public AuthUser(MemberDto memberDto, List<GrantedAuthority> authorities) {
         super(memberDto.getMemId(), memberDto.getPassword(), authorities);
+        this.memType = memberDto.getMemType();
         this.memId = memberDto.getMemId();
         this.nickname = memberDto.getNickname();
         this.role = authorities.get(0).toString();

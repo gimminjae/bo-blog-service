@@ -31,7 +31,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final MemberService memberService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String accessToken = request.getHeader("Authentication");
+        String accessToken = request.getHeader("Authorization");
 
         if (accessToken != null && !accessToken.isEmpty()) {
             // 1차 체크(정보가 변조되지 않았는지 체크)

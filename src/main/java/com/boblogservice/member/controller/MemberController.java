@@ -1,6 +1,5 @@
 package com.boblogservice.member.controller;
 
-import com.boblogservice.common.exception.FormValidationException;
 import com.boblogservice.common.validation.ValidationUtil;
 import com.boblogservice.member.dto.LoginDto;
 import com.boblogservice.member.dto.SignUpDto;
@@ -22,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "MemberController API", description = "member")
 @RestController
@@ -75,5 +75,15 @@ public class MemberController {
     @GetMapping("")
     public ResponseEntity<Map<String, Object>> getMe(@AuthenticationPrincipal AuthUser authUser) {
         return new ResponseEntity<>(Map.of("member", authUser), HttpStatus.OK);
+    }
+    @Operation(summary = "profile image upload - 회원 프로필 업로드", description = "")
+    @PostMapping("/profile-image")
+    public ResponseEntity<Void> uploadProfileImage(
+            @AuthenticationPrincipal AuthUser authUser,
+            @RequestParam String postId,
+            @RequestParam String memId,
+            @RequestParam MultipartFile imageFile) {
+        log.debug("debug: image upload");
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

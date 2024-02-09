@@ -67,22 +67,27 @@ public class Member {
     private Role role;
 
     @Builder
-    private Member(LocalDateTime createDateTime,
+    private Member(String memId,
+                   LocalDateTime createDateTime,
                    LocalDateTime updateDateTime,
                    String username,
                    String password,
                    String nickname,
-                   MemberType memType) {
+                   MemberType memType,
+                   Boolean useYn) {
+        this.memId = memId;
         this.createDateTime = createDateTime;
         this.updateDateTime = updateDateTime;
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.memType = memType;
+        this.useYn = useYn;
     }
 
     public static Member from(MemberDto memberDto) {
         return Member.builder()
+                .memId(memberDto.getMemId())
                 .createDateTime(LocalDateTime.now())
                 .updateDateTime(LocalDateTime.now())
                 .username(memberDto.getUsername())
@@ -95,8 +100,8 @@ public class Member {
     public MemberDto toDto() {
         return MemberDto.builder()
                 .memId(this.getMemId())
-                .createDateTime(LocalDateTime.now())
-                .updateDateTime(LocalDateTime.now())
+                .createDateTime(this.getCreateDateTime())
+                .updateDateTime(this.getUpdateDateTime())
                 .username(this.getUsername())
                 .nickname(this.getNickname())
                 .password(this.getPassword())
