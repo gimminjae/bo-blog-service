@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" layout:decorate="~{layouts/layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<div layout:fragment="content" class="">
+    <div class="col-md-7 col-lg-8 mx-auto">
+        <h4 class="mb-3">회원가입</h4>
+        <form class="needs-validation" novalidate>
+            <div class="row g-3">
+
+                <div class="col-12">
+                    <label for="username" class="form-label">User Id</label>
+                    <div class="input-group has-validation">
+                        <span class="input-group-text">@</span>
+                        <input type="text" class="form-control" id="username" placeholder="User Id" required>
+                        <div class="invalid-feedback">
+                            Your username is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label for="nickname" class="form-label">Nickname</label>
+                    <div class="input-group has-validation">
+                        <span class="input-group-text">@</span>
+                        <input type="text" class="form-control" id="nickname" placeholder="Nickname" required>
+                        <div class="invalid-feedback">
+                            Your nickname is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                    <div class="invalid-feedback">
+                        Please enter a valid email address for shipping updates.
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="password1" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password1" placeholder="" value="" required>
+                    <div class="invalid-feedback">
+                        Valid first name is required.
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="password2" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="password2" placeholder="" value="" required>
+                    <div class="invalid-feedback">
+                        Valid last name is required.
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="my-4">
+
+            <button class="btn-signUp w-100 btn btn-primary btn-lg" type="button">Join</button>
+        </form>
+    </div>
+    <script defer>
+        async function signUp() {
+            const signUpDto = getSignUpDto()
+            try {
+                await requestSignUp(signUpDto)
+                location.href = '/'
+            } catch (error) {
+                console.log('error: ', error.response.data.errors)
+            }
+        }
+        function getSignUpDto() {
+            const username = document.querySelector('#username').value
+            const nickname = document.querySelector('#nickname').value
+            const password1 = document.querySelector('#password1').value
+            const password2 = document.querySelector('#password2').value
+            const email = document.querySelector('#email').value
+
+            return {
+                username: username,
+                nickname: nickname,
+                password1: password1,
+                password2: password2
+            }
+        }
+
+        /**
+         * api function
+         */
+        async function requestSignUp(signUpDto) {
+            return await axios.post(request.signUp.apiUrl, signUpDto)
+        }
+
+        /**
+         * element event
+         */
+        const signUpBtn = document.querySelector('.btn-signUp')
+        signUpBtn.addEventListener('click', signUp)
+    </script>
+</div>
+</html>
