@@ -24,14 +24,15 @@ public class FieldErrorDetail {
 //                messageSource.getMessage(fieldError, locale)
         );
     }
+
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        sb.append("%s: %s,".formatted("objectName", this.objectName));
-        sb.append("%s: %s,".formatted("field", this.field));
-        sb.append("%s: %s,".formatted("code", this.code));
-        sb.append("%s: %s".formatted("message", this.message));
-        sb.append("}");
-        return sb.toString();
+        return new StringBuilder()
+                .append("{")
+                .append("%s: %s,".formatted("objectName", this.objectName))
+                .append("%s: %s,".formatted("field", this.field))
+                .append("%s: %s,".formatted("code", this.code))
+                .append("%s: %s".formatted("message", this.message))
+                .append("}")
+                .toString();
     }
 }
