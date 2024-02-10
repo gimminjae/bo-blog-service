@@ -11,6 +11,7 @@
                     <div class="input-group has-validation">
                         <span class="input-group-text">@</span>
                         <input type="text" class="form-control" id="username" placeholder="User Id" required>
+                        <button class="btn-confirm-username btn btn-secondary" type="button">중복확인</button>
                         <div class="invalid-feedback">
                             Your username is required.
                         </div>
@@ -22,6 +23,7 @@
                     <div class="input-group has-validation">
                         <span class="input-group-text">@</span>
                         <input type="text" class="form-control" id="nickname" placeholder="Nickname" required>
+                        <button class="btn-confirm-nickname btn btn-secondary" type="button">중복확인</button>
                         <div class="invalid-feedback">
                             Your nickname is required.
                         </div>
@@ -63,6 +65,30 @@
         </form>
     </div>
     <script defer>
+        function input(event, elementId) {
+            if (elementId === 'username') confirmUsernameBtn.classList.remove('disabled')
+            if (elementId === 'nickname') confirmNicknameBtn.classList.remove('disabled')
+        }
+        async function confirmUsername() {
+            const username = document.querySelector('#username').value
+            try {
+                await requestConfirmUsername(username)
+                alert('사용 가능합니다.')
+                document.querySelector('.btn-confirm-username').classList.add('disabled')
+            } catch (error) {
+                alert(error.response.data.errors)
+            }
+        }
+        async function confirmNickname() {
+            const nickname = document.querySelector('#nickname').value
+            try {
+                await requestConfirmNickname(nickname)
+                alert('사용 가능합니다.')
+                document.querySelector('.btn-confirm-nickname').classList.add('disabled')
+            } catch (error) {
+                alert(error.response.data.errors)
+            }
+        }
         async function signUp() {
             const signUpDto = await getSignUpDto()
             try {
@@ -98,12 +124,34 @@
         async function requestSignUp(signUpDto) {
             return await axios.post(request.signUp.apiUrl, signUpDto)
         }
+        async function requestConfirmNickname(nickname) {
+            return await axios.get(`${request.confirmNickname.apiUrl}?nickname=${nickname}`)
+        }
+        async function requestConfirmUsername(username) {
+            return await axios.get(`${request.confirmUsername.apiUrl}?username=${username}`)
+        }
 
         /**
          * element event
          */
+        const confirmYnBeforeSignUp = {
+            username: false,
+            nickname: false,
+            email: false,
+            equalsPassword: false
+        }
         const signUpBtn = document.querySelector('.btn-signUp')
+        const usernameInput = document.querySelector('#username')
+        const nicknameInput = document.querySelector('#nickname')
+        const confirmUsernameBtn = document.querySelector('.btn-confirm-username')
+        const confirmNicknameBtn = document.querySelector('.btn-confirm-nickname')
+
+        confirmUsernameBtn.addEventListener('click', confirmUsername)
+        confirmNicknameBtn.addEventListener('click', confirmNickname)
+        usernameInput.addEventListener('keydown', (event) => input(event, 'username'))
+        nicknameInput.addEventListener('keydown', (event) => input(event, 'nickname'))
         signUpBtn.addEventListener('click', signUp)
+
     </script>
 </div>
 </html>

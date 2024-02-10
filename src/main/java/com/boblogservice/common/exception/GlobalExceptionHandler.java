@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<Map<String, String>> handleNullPointerException(IllegalStateException e) {
-        return new ResponseEntity<>(Map.of("message", e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(Map.of("errors", e.getMessage()), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException e) {
