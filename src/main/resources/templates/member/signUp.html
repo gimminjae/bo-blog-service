@@ -57,17 +57,23 @@
             <hr class="my-4">
 
             <button class="btn-signUp w-100 btn btn-primary btn-lg" type="button">Join</button>
+
+            <div class="alert alert-danger errors my-3 d-none" role="alert">
+            </div>
         </form>
     </div>
     <script defer>
         async function signUp() {
-            const signUpDto = getSignUpDto()
+            const signUpDto = await getSignUpDto()
             try {
                 await requestSignUp(signUpDto)
                 location.href = '/'
             } catch (error) {
-                console.log('error: ', error.response.data.errors)
-                console.log('error: ', JSON.parse(error.response.data.errors))
+                let errorMessages = ''
+                error.response.data.errors.forEach(error => errorMessages += `<div>${error.message}</div>`)
+                const errorsElement = document.querySelector('.errors')
+                errorsElement.innerHTML = errorMessages
+                errorsElement.classList.remove('d-none')
             }
         }
         function getSignUpDto() {
@@ -81,7 +87,8 @@
                 username: username,
                 nickname: nickname,
                 password1: password1,
-                password2: password2
+                password2: password2,
+                // email: email
             }
         }
 

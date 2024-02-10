@@ -7,8 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/member")
 public class FrontMemberController {
-    @GetMapping
+    @GetMapping("/sign-up")
     public String signUp() {
         return "member/signUp";
+    }
+
+    @GetMapping("/sign-in")
+    public String signIn() {
+        return "member/sign-in";
     }
 }
